@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>calendar</title>
+	<script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+    <style type="text/css">
+    	.week{
+    		display: inline-block;
+    		width: 30px;
+    		height: 30px;
+    		background-color: blue;
+    	}
+    	.day{
+    		display: inline-block;
+    		width: 30px;
+    		height: 30px;
+    		background-color: yellow;
+    	}
+    	#dayContainer{
+    		width: 210px;
+    		display: flex;
+    		jastufy-content:center;
+    		flex-wrap:wrap;
+    	}
+    </style>
+</head>
+<body>
+	<div id="weekLine"></div>
+	<script type="text/babel">
+		var week = ["日","一","二","三","四","五","六"];
+		
+		//获取某一个月的天数
+			function getCountDays() {
+		        var curDate = new Date();
+		         /* 获取当前月份 */
+		        var curMonth = curDate.getMonth();
+		         /*  生成实际的月份: 由于curMonth会比实际月份小1, 故需加1 */
+		        curDate.setMonth(curMonth + 1);
+		        /* 将日期设置为0*/
+		        curDate.setDate(0);
+		         /* 返回当月的天数 */
+		        return curDate.getDate();
+		    }
+		class WeekLine extends React.Component{
+			constructor(){
+				super();
+			}
+
+			render(){
+				return(
+				<div>
+					{week.map(function(value, key){
+						return <span className="week" key={key}>{value}</span>
+						})
+					}
+				</div>)
+			}
+		}
+
+         
+		class Day extends React.Component{
+			setToolbar(){
+				var day = getCountDays();
+				var tools = [];
+				for( var i = 0; i < day; ++i){
+					tools.push(<div key={i} className="day">{i}</div>);
+				}
+				return tools;
+			}
+			//1号前的空表填充
+			blank(){
+				let date = new Date();
+				date.setDate(1);
+				let blankDay = date.getDay();
+				let temp = [];
+				for(let i=0;i<blankDate;++i){
+					temp.push(<span className="day"></span>);
+				}
+				return temp
+			}
+			
+
+			constructor (){
+				super();
+				this.setToolbar = this.setToolbar.bind(this);
+				this.blank = this.blank.bind(this);
+			}
+
+			render(){
+				return(
+					<div id="dayContainer">
+						{this.setToolbar()}
+					</div>)
+			}
+		}
+
+		ReactDOM.render(
+			<div>
+				<WeekLine/>
+				<Day/>
+			</div>,
+			document.getElementById("weekLine"));
+	</script>
+</body>
+</html>
